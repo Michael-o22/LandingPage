@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Condomaps - ระบบให้บริการสืบค้นอาคารชุด ห้องชุด</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Prompt:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'DM Sans', 'Prompt', sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        .canvas-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .text-shadow-sm {
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+        }
+        .text-shadow-md {
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+        }
+        .text-shadow-lg {
+            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.9);
+        }
+    </style>
+</head>
+<body class="antialiased overflow-x-hidden">
+    <!-- Background Canvas -->
+    <canvas id="scroll-animation" class="canvas-bg"></canvas>
+
+    <!-- BANNER HERO -->
+    <div class="relative w-full min-h-screen flex flex-col justify-between p-6 sm:p-10 md:p-12 lg:p-16">
+        <header class="relative z-10 w-full flex items-center justify-between py-2 text-shadow-md">
+            <div class="cursor-pointer flex items-center transition-opacity hover:opacity-80 text-xl font-bold tracking-widest text-white">
+                CONDOMAPS
+            </div>
+            <div class="flex items-center space-x-4 sm:space-x-8 md:space-x-10">
+                <nav class="hidden md:flex items-center space-x-8 lg:space-x-10 text-sm md:text-base font-medium tracking-wide text-white">
+                    <button class="hover:opacity-75 transition-opacity text-shadow-sm">หน้าหลัก</button>
+                    <button class="hover:opacity-75 transition-opacity text-shadow-sm">แหล่งข้อมูล</button>
+                    <button class="hover:opacity-75 transition-opacity text-shadow-sm">แผนที่ 3 มิติ</button>
+                </nav>
+                <button class="text-sm sm:text-base font-medium px-5 sm:px-6 py-2.5 rounded-xl transition-colors duration-200 cursor-pointer shadow-sm bg-white text-black hover:bg-neutral-200">
+                    เข้าสู่ระบบ
+                </button>
+            </div>
+        </header>
+
+        <main class="relative z-10 mt-auto pb-2 sm:pb-4 pt-12 flex flex-col justify-end items-start text-left">
+            <div class="max-w-3xl space-y-3 sm:space-y-4">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight leading-[1.18] text-white text-shadow-lg">
+                    ระบบให้บริการสืบค้นอาคารชุด <br class="hidden sm:inline" />
+                    ห้องชุด Condomaps
+                </h1>
+                <div class="pt-1 sm:pt-2 flex flex-wrap items-center gap-4">
+                    <button class="text-sm sm:text-base font-medium px-6 sm:px-7 py-3 rounded-xl transition-all duration-200 cursor-pointer shadow-md bg-white text-black hover:bg-neutral-200">
+                        เข้าสู่ระบบ ดูแผนที่ 3 มิติ
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- STATS SECTION -->
+    <section class="relative w-full py-12 sm:py-16 md:py-20 px-6 sm:px-10 md:px-12 lg:px-16">
+        <div class="max-w-7xl mx-auto w-full space-y-12 sm:space-y-16">
+            
+            <!-- Top: 3-Column Clean Full-Width Stat Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 lg:gap-16 w-full">
+                <!-- Stat 1 -->
+                <div class="group flex flex-col justify-between space-y-4 w-full">
+                    <div class="space-y-2 sm:space-y-3 text-shadow-md">
+                        <div class="text-5xl sm:text-6xl lg:text-7xl font-medium tracking-tight text-white text-shadow-lg">68+</div>
+                        <h3 class="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-white">จำนวนผู้เข้าใช้งาน</h3>
+                        <p class="text-sm sm:text-base leading-relaxed font-medium text-neutral-100">จำนวนสถิติผู้ใช้งานที่เข้าถึงและสืบค้นข้อมูลในระบบ Condomaps</p>
+                    </div>
+                    <div class="pt-1 flex items-center gap-2">
+                        <button class="inline-flex items-center gap-2 text-sm sm:text-base font-medium transition-all duration-200 cursor-pointer text-white hover:text-neutral-300 text-shadow-md">
+                            <span>รายละเอียด</span>
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Stat 2 -->
+                <div class="group flex flex-col justify-between space-y-4 w-full">
+                    <div class="space-y-2 sm:space-y-3 text-shadow-md">
+                        <div class="text-5xl sm:text-6xl lg:text-7xl font-medium tracking-tight text-white text-shadow-lg">978+</div>
+                        <h3 class="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-white">ข้อมูลอาคารชุด</h3>
+                        <p class="text-sm sm:text-base leading-relaxed font-medium text-neutral-100">ข้อมูลอาคารชุดรวบรวมครบถ้วนสำหรับการสืบค้นและวิเคราะห์ข้อมูลเชิงพื้นที่</p>
+                    </div>
+                    <div class="pt-1 flex items-center gap-2">
+                        <button class="inline-flex items-center gap-2 text-sm sm:text-base font-medium transition-all duration-200 cursor-pointer text-white hover:text-neutral-300 text-shadow-md">
+                            <span>รายละเอียด</span>
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+                <!-- Stat 3 -->
+                <div class="group flex flex-col justify-between space-y-4 w-full">
+                    <div class="space-y-2 sm:space-y-3 text-shadow-md">
+                        <div class="text-5xl sm:text-6xl lg:text-7xl font-medium tracking-tight text-white text-shadow-lg">$5.4B</div>
+                        <h3 class="text-lg sm:text-xl md:text-2xl font-medium tracking-tight text-white">ข้อมูลห้องชุด (ให้บริการบนระบบฯ)</h3>
+                        <p class="text-sm sm:text-base leading-relaxed font-medium text-neutral-100">ข้อมูลยูนิตห้องชุดพร้อมระบบสืบค้นแผนที่ 3 มิติความละเอียดสูง</p>
+                    </div>
+                    <div class="pt-1 flex items-center gap-2">
+                        <button class="inline-flex items-center gap-2 text-sm sm:text-base font-medium transition-all duration-200 cursor-pointer text-white hover:text-neutral-300 text-shadow-md">
+                            <span>รายละเอียด</span>
+                            <svg class="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom: 3 Vertical Rectangular Feature Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 w-full pt-4">
+                <!-- Card 1 -->
+                <div class="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-lg transition-all duration-300 group hover:-translate-y-1 bg-neutral-900/90 text-white border border-neutral-800">
+                    <div class="p-6 sm:p-7 flex flex-col justify-between space-y-6 relative min-h-[200px]">
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-neutral-800">
+                            <div class="h-full bg-white" style="width: 50%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-5 h-5 bg-white text-black rounded-sm flex items-center justify-center rotate-45 shadow-sm">
+                                    <div class="w-2 h-2 bg-black rounded-full"></div>
+                                </div>
+                                <span class="font-semibold text-sm sm:text-base tracking-tight">การแสดงผล</span>
+                            </div>
+                        </div>
+                        <h4 class="text-xl sm:text-2xl font-semibold tracking-tight leading-snug">ปรับปรุงประสิทธิภาพการใช้งานและการแสดงผล</h4>
+                    </div>
+                    <div class="relative h-48 sm:h-56 lg:h-64 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80" alt="Card Image" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black/10 transition-opacity group-hover:opacity-0"></div>
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <svg viewBox="0 0 100 100" class="w-28 h-28 sm:w-36 sm:h-36 text-white drop-shadow-xl transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polygon points="50 4, 92 26, 92 74, 50 96, 8 74, 8 26" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 2 -->
+                <div class="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-lg transition-all duration-300 group hover:-translate-y-1 bg-neutral-900/90 text-white border border-neutral-800">
+                    <div class="p-6 sm:p-7 flex flex-col justify-between space-y-6 relative min-h-[200px]">
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-neutral-800">
+                            <div class="h-full bg-white" style="width: 75%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-5 h-5 bg-white text-black rounded-sm flex items-center justify-center rotate-45 shadow-sm">
+                                    <div class="w-2 h-2 bg-black rounded-full"></div>
+                                </div>
+                                <span class="font-semibold text-sm sm:text-base tracking-tight">มลพิษ PM 2.5</span>
+                            </div>
+                        </div>
+                        <h4 class="text-xl sm:text-2xl font-semibold tracking-tight leading-snug">แสดงผลข้อมูล PM 2.5 ร่วมกับข้อมูลอาคารชุด</h4>
+                    </div>
+                    <div class="relative h-48 sm:h-56 lg:h-64 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=800&q=80" alt="Card Image" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black/10 transition-opacity group-hover:opacity-0"></div>
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <svg viewBox="0 0 100 100" class="w-28 h-28 sm:w-36 sm:h-36 text-white drop-shadow-xl transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polygon points="50 4, 92 26, 92 74, 50 96, 8 74, 8 26" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <!-- Card 3 -->
+                <div class="rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col justify-between shadow-lg transition-all duration-300 group hover:-translate-y-1 bg-neutral-900/90 text-white border border-neutral-800">
+                    <div class="p-6 sm:p-7 flex flex-col justify-between space-y-6 relative min-h-[200px]">
+                        <div class="absolute top-0 left-0 right-0 h-1 bg-neutral-800">
+                            <div class="h-full bg-white" style="width: 100%;"></div>
+                        </div>
+                        <div class="flex items-center justify-between pt-1">
+                            <div class="flex items-center gap-2">
+                                <div class="w-5 h-5 bg-white text-black rounded-sm flex items-center justify-center rotate-45 shadow-sm">
+                                    <div class="w-2 h-2 bg-black rounded-full"></div>
+                                </div>
+                                <span class="font-semibold text-sm sm:text-base tracking-tight">สัญชาติผู้ถือครอง</span>
+                            </div>
+                        </div>
+                        <h4 class="text-xl sm:text-2xl font-semibold tracking-tight leading-snug">แสดงผลข้อมูลสัดส่วนสัญชาติผู้ถือครองห้องชุด</h4>
+                    </div>
+                    <div class="relative h-48 sm:h-56 lg:h-64 w-full overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80" alt="Card Image" class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
+                        <div class="absolute inset-0 bg-black/10 transition-opacity group-hover:opacity-0"></div>
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <svg viewBox="0 0 100 100" class="w-28 h-28 sm:w-36 sm:h-36 text-white drop-shadow-xl transition-transform duration-500 group-hover:scale-110" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polygon points="50 4, 92 26, 92 74, 50 96, 8 74, 8 26" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FEATURE SECTION -->
+    <section class="relative w-full min-h-screen flex flex-col justify-center p-6 sm:p-10 md:p-12 lg:p-16">
+        <div class="max-w-7xl w-full mx-auto flex flex-col items-start text-left my-auto">
+            <div class="w-full lg:w-1/2 max-w-xl flex flex-col items-start text-left">
+                <!-- Icon Badge with bg-white text-black -->
+                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center mb-6 border transition-colors bg-white text-black border-white shadow-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <div class="space-y-4 sm:space-y-5">
+                    <h2 class="text-xl sm:text-3xl md:text-4xl lg:text-5xl font-medium tracking-tight leading-[1.2] text-neutral-900 drop-shadow-[0_2px_4px_rgba(255,255,255,0.5)]">
+                        Power up with smart, clean condomaps, because searching properties should feel as good as it looks.
+                    </h2>
+                    <p class="text-sm sm:text-base md:text-lg font-medium leading-relaxed text-neutral-800 drop-shadow-[0_1px_2px_rgba(255,255,255,0.5)]">
+                        ยกระดับการสืบค้นข้อมูลอาคารชุดและห้องชุด 3 มิติ ด้วยระบบบริหารจัดการอสังหาริมทรัพย์อัจฉริยะ
+                    </p>
+                </div>
+                <div class="pt-6 sm:pt-8 flex justify-start">
+                    <button class="group flex items-center gap-3 pl-6 sm:pl-7 pr-2.5 sm:pr-3 py-2.5 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-300 cursor-pointer shadow-lg bg-white text-black hover:bg-neutral-200">
+                        <span>Let's see Condomaps</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const canvas = document.getElementById('scroll-animation');
+        const context = canvas.getContext('2d');
+        const frameCount = 280;
+
+        const currentFrame = index => (
+            `JPG/ezgif-frame-${index.toString().padStart(3, '0')}.jpg`
+        );
+
+        const images = [];
+        for (let i = 1; i <= frameCount; i++) {
+            const img = new Image();
+            img.src = currentFrame(i);
+            images.push(img);
+        }
+
+        images[0].onload = () => {
+            canvas.width = images[0].width;
+            canvas.height = images[0].height;
+            context.drawImage(images[0], 0, 0);
+        };
+
+        let targetFrame = 0;
+        let currentFrameIndex = 0;
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.documentElement.scrollTop;
+            const maxScrollTop = document.documentElement.scrollHeight - window.innerHeight;
+            if (maxScrollTop > 0) {
+                const scrollFraction = scrollTop / maxScrollTop;
+                targetFrame = Math.min(frameCount - 1, Math.floor(scrollFraction * frameCount));
+            }
+        });
+
+        function updateFrame() {
+            currentFrameIndex += (targetFrame - currentFrameIndex) * 0.1;
+            const frameToDraw = Math.round(currentFrameIndex);
+            
+            if (images[frameToDraw] && images[frameToDraw].complete) {
+                context.clearRect(0, 0, canvas.width, canvas.height); 
+                context.drawImage(images[frameToDraw], 0, 0);
+            }
+            requestAnimationFrame(updateFrame);
+        }
+
+        requestAnimationFrame(updateFrame);
+    </script>
+</body>
+</html>
